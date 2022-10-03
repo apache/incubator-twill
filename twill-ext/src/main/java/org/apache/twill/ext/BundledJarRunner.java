@@ -128,6 +128,9 @@ public class BundledJarRunner {
     while (entries.hasMoreElements()) {
       JarEntry entry = entries.nextElement();
       File output = new File(targetDirectory, entry.getName());
+      if (!output.toPath().normalize().startsWith(targetDirectory.toPath().normalize())) {
+        throw new IOException("Bad zip entry");
+      }
 
       if (entry.isDirectory()) {
         output.mkdirs();
